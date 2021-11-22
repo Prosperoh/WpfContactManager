@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 
 namespace WpfContactManager
 {
-    
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -26,11 +13,15 @@ namespace WpfContactManager
         public MainWindow()
         {
             ContactDB = new ContactDatabase();
+            SelectedTreeViewItem = null;
 
             InitializeComponent();
 
             RebuildTreeView();
         }
+
+        private ContactDatabase ContactDB { get; set; }
+        private TreeViewItem? SelectedTreeViewItem { get; set; }
 
         private void AddContactsFromGroupToTree(Group? group, TreeViewItem groupTreeViewItem)
         {
@@ -39,10 +30,48 @@ namespace WpfContactManager
             {
                 TreeViewItem contactTreeViewItem = new TreeViewItem
                 {
-                    Header = contact.Name
+                    Header = contact.Name,
+                    Tag = contact.Id
                 };
+                contactTreeViewItem.Selected += treeViewItem_contactSelected;
                 _ = groupTreeViewItem.Items.Add(contactTreeViewItem);
             }
+        }
+
+        private void UpdateGroupEditPanel(TreeViewItem groupTreeViewItem)
+        {
+            int groupId = (int)groupTreeViewItem.Tag;
+            Group group = ContactDB.GetGroupById(groupId);
+            groupNameField.Text = group.Name;
+        }
+
+        private void UpdateContactEditPanel(TreeViewItem contactTreeViewItem)
+        {
+            int contactId = (int)contactTreeViewItem.Tag;
+            Contact contact = ContactDB.GetContactById(contactId);
+            contactNameField.Text = contact.Name;
+            contactCompanyField.Text = contact.Company;
+            contactPhoneNumberField.Text = contact.PhoneNumber;
+        }
+
+        private void treeViewItem_groupSelected(object sender, RoutedEventArgs e)
+        {
+            contactEditPanel.Visibility = Visibility.Collapsed;
+            groupEditPanel.Visibility = Visibility.Visible;
+
+            SelectedTreeViewItem = (TreeViewItem)e.Source;
+            UpdateGroupEditPanel(SelectedTreeViewItem);
+        }
+
+        private void treeViewItem_contactSelected(object sender, RoutedEventArgs e)
+        {
+            groupEditPanel.Visibility = Visibility.Collapsed;
+            contactEditPanel.Visibility = Visibility.Visible;
+
+            SelectedTreeViewItem = (TreeViewItem)e.Source;
+
+            UpdateContactEditPanel(SelectedTreeViewItem);
+            e.Handled = true; // to avoid fire the selected event for the parent node
         }
 
         private void RebuildTreeView()
@@ -53,8 +82,10 @@ namespace WpfContactManager
             {
                 TreeViewItem groupTreeViewItem = new TreeViewItem
                 {
-                    Header = group.Name
+                    Header = group.Name,
+                    Tag = group.Id
                 };
+                groupTreeViewItem.Selected += treeViewItem_groupSelected;
                 _ = contactsTreeView.Items.Add(groupTreeViewItem);
 
                 AddContactsFromGroupToTree(group, groupTreeViewItem);
@@ -67,8 +98,6 @@ namespace WpfContactManager
 
             AddContactsFromGroupToTree(null, noGroupItem);
         }
-
-        private ContactDatabase ContactDB { get; set; }
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
@@ -95,6 +124,21 @@ namespace WpfContactManager
             {
                 ContactDatabaseIO.SaveToFile(dialog.FileName, ContactDB);
             }
+        }
+
+        private void btnAddContact_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeleteContact_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAddGroup_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

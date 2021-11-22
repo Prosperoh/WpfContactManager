@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace WpfContactManager
 {
@@ -44,6 +42,7 @@ namespace WpfContactManager
                 {
                     return ReadStatus.Error;
                 }
+                contacts[i].Id = i;
             }
 
             return ReadStatus.Success;

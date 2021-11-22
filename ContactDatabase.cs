@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace WpfContactManager
 {
@@ -18,14 +16,16 @@ namespace WpfContactManager
     }
     public struct Contact
     {
-        public Contact(string name, string company, Group? group, string phoneNumber)
+        public Contact(int id, string name, string company, Group? group, string phoneNumber)
         {
+            Id = id;
             Name = name;
             Company = company;
             Group = group;
             PhoneNumber = phoneNumber;
         }
 
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Company { get; set; }
         public Group? Group { get; set; }
@@ -51,6 +51,16 @@ namespace WpfContactManager
             
             Array.Sort(contactsInGroup, (c1, c2) => c1.Name.CompareTo(c2.Name));
             return contactsInGroup;
+        }
+
+        public Contact GetContactById(int id)
+        {
+            return Array.Find(Contacts, c => c.Id == id);
+        }
+
+        public Group GetGroupById(int id)
+        {
+            return Array.Find(Groups, g => g.Id == id);
         }
     }
 }
