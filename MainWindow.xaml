@@ -34,14 +34,25 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="btnAddContact" Click="btnAddContact_Click">Add contact</Button>
-                    <Button Grid.Column="1" Name="btnDeleteContact" Click="btnDeleteContact_Click">Delete contact</Button>
-                    <Button Grid.Column="2" Name="btnAddGroup" Click="btnAddGroup_Click">Add group</Button>
+                    <Button Name="btnAddContact" Click="BtnAddContact_Click">Add contact</Button>
+                    <Button Grid.Column="1" Name="btnDeleteContact" Click="BtnDeleteContact_Click">Delete contact</Button>
+                    <Button Grid.Column="2" Name="btnAddGroup" Click="BtnAddGroup_Click">Add group</Button>
                 </Grid>
-                <TreeView Grid.Row="1" Name="contactsTreeView"/>
+
+                <TreeView Grid.Row="1" ItemsSource="{Binding TreeViewGroups}" TreeViewItem.Selected="TreeViewItemSelected">
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type local:TreeViewGroup}" ItemsSource="{Binding Contacts}">
+                            <TextBlock Text="{Binding Name}"/>
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type local:Contact}">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+
             </Grid>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
-            <StackPanel Name="contactEditPanel" Grid.Column="2" Visibility="Collapsed">
+            <StackPanel Name="contactEditPanel" Grid.Column="2" Visibility="{Binding ContactEditPanelVisible}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -60,7 +71,7 @@
                     <TextBox Name="contactPhoneNumberField" Grid.Column="1" Grid.Row="2"></TextBox>
                 </Grid>
             </StackPanel>
-            <StackPanel Name="groupEditPanel" Grid.Column="2" Visibility="Collapsed">
+            <StackPanel Name="groupEditPanel" Grid.Column="2" Visibility="{Binding GroupEditPanelVisible}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -70,7 +81,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label>Name:</Label>
-                    <TextBox Name="groupNameField" Grid.Column="1"></TextBox>
+                    <TextBox Name="groupNameField" Grid.Column="1" Text="{Binding Path=GroupNameFieldValue, Mode=TwoWay}"></TextBox>
                 </Grid>
             </StackPanel>
         </Grid>

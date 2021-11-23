@@ -168,13 +168,13 @@ namespace WpfContactManager
 
         private static void WriteContact(StreamWriter writer, Contact c)
         {
-            string groupId = c.Group.HasValue ? c.Group.Value.Id.ToString() : "";
+            string groupId = c.Group is null ? "" : c.Group.Id.ToString();
             writer.WriteLine($@"{c.Name};{c.Company};{c.PhoneNumber};{groupId}");
         }
 
         private static void SaveGroups(StreamWriter writer, ContactDatabase cd)
         {
-            writer.WriteLine(cd.Groups.Length);
+            writer.WriteLine(cd.Groups.Count);
             foreach (Group g in cd.Groups)
             {
                 WriteGroup(writer, g);
@@ -184,7 +184,7 @@ namespace WpfContactManager
 
         private static void SaveContacts(StreamWriter writer, ContactDatabase cd)
         {
-            writer.WriteLine(cd.Contacts.Length);
+            writer.WriteLine(cd.Contacts.Count);
             foreach (Contact c in cd.Contacts)
             {
                 WriteContact(writer, c);
