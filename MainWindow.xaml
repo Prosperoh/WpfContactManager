@@ -64,11 +64,11 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label>Name:</Label>
-                    <TextBox Name="contactNameField" Grid.Column="1"></TextBox>
+                    <TextBox Grid.Column="1" Text="{Binding Path=ContactNameFieldValue, Mode=TwoWay}"></TextBox>
                     <Label Grid.Row="1">Company:</Label>
-                    <TextBox Name="contactCompanyField" Grid.Column="1" Grid.Row="1"></TextBox>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=ContactCompanyFieldValue, Mode=TwoWay}"/>
                     <Label Grid.Row="2">Phone number:</Label>
-                    <TextBox Name="contactPhoneNumberField" Grid.Column="1" Grid.Row="2"></TextBox>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=ContactPhoneNumberFieldValue, Mode=TwoWay}"/>
                 </Grid>
             </StackPanel>
             <StackPanel Name="groupEditPanel" Grid.Column="2" Visibility="{Binding GroupEditPanelVisible}">
@@ -81,7 +81,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label>Name:</Label>
-                    <TextBox Name="groupNameField" Grid.Column="1" Text="{Binding Path=GroupNameFieldValue, Mode=TwoWay}"></TextBox>
+                    <TextBox Grid.Column="1" Text="{Binding Path=GroupNameFieldValue, Mode=TwoWay}"></TextBox>
                 </Grid>
             </StackPanel>
         </Grid>

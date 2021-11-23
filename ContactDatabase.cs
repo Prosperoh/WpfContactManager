@@ -35,7 +35,7 @@ namespace WpfContactManager
         public IList<Contact> Contacts { get; set; }
         public IList<Group> Groups { get; set; }
 
-        public Contact[] GetContactsInGroup(Group? group)
+        public Contact[] GetContactsInGroup(Group group)
         {
             Contact[] contactsInGroup = Contacts
                 .Where(c => c.Group.Equals(group))

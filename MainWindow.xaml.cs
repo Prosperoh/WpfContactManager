@@ -31,7 +31,7 @@ namespace WpfContactManager
         public ViewModel()
         {
             ContactDB = new ContactDatabase();
-            ContactDB.Groups.Add(new Group(0, "abc"));
+            ContactDB.Groups.Add(new Group(0, "New group")); // for testing
             SelectedTreeViewItem = null;
         }
 
@@ -56,8 +56,14 @@ namespace WpfContactManager
             {
                 _stvi = value;
                 OnPropertyChanged("SelectedTreeViewItem");
+
                 OnPropertyChanged("GroupEditPanelVisible");
                 OnPropertyChanged("ContactEditPanelVisible");
+
+                OnPropertyChanged("GroupNameFieldValue");
+                OnPropertyChanged("ContactNameFieldValue");
+                OnPropertyChanged("ContactCompanyFieldValue");
+                OnPropertyChanged("ContactPhoneNumberFieldValue");
             }
         }
         private TreeViewItem _stvi;
@@ -122,9 +128,66 @@ namespace WpfContactManager
                 {
                     g.Name = value;
                     OnPropertyChanged("GroupNameFieldValue");
+                    OnPropertyChanged("TreeViewGroups");
                 }
             }
         }
+
+        public string ContactNameFieldValue
+        {
+            get
+            {
+                Contact c = GetSelectedContact(SelectedTreeViewItem);
+                return c != null ? c.Name : "";
+            }
+            set
+            {
+                Contact c = GetSelectedContact(SelectedTreeViewItem);
+                if (c != null)
+                {
+                    c.Name = value;
+                    OnPropertyChanged("ContactNameFieldValue");
+                    OnPropertyChanged("TreeViewGroups");
+                }
+            }
+        }
+
+        public string ContactCompanyFieldValue
+        {
+            get
+            {
+                Contact c = GetSelectedContact(SelectedTreeViewItem);
+                return c != null ? c.Company : "";
+            }
+            set
+            {
+                Contact c = GetSelectedContact(SelectedTreeViewItem);
+                if (c != null)
+                {
+                    c.Company = value;
+                    OnPropertyChanged("ContactCompanyFieldValue");
+                }
+            }
+        }
+
+        public string ContactPhoneNumberFieldValue
+        {
+            get
+            {
+                Contact c = GetSelectedContact(SelectedTreeViewItem);
+                return c != null ? c.PhoneNumber : "";
+            }
+            set
+            {
+                Contact c = GetSelectedContact(SelectedTreeViewItem);
+                if (c != null)
+                {
+                    c.PhoneNumber = value;
+                    OnPropertyChanged("ContactPhoneNumberFieldValue");
+                }
+            }
+        }
+
     }
 
     /// <summary>
@@ -175,17 +238,17 @@ namespace WpfContactManager
 
         private void BtnAddContact_Click(object sender, RoutedEventArgs e)
         {
-
+            // TODO
         }
 
         private void BtnDeleteContact_Click(object sender, RoutedEventArgs e)
         {
-
+            // TODO
         }
 
         private void BtnAddGroup_Click(object sender, RoutedEventArgs e)
         {
-
+            // TODO
         }
     }
 }
